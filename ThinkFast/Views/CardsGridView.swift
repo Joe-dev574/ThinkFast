@@ -7,12 +7,26 @@
 
 import SwiftUI
 
-struct CardsGridView: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+struct CardsGrid: View {
+    @Environment(ThinkFastViewModel.self) private var viewModel
+    
+    
+    private var columns: [GridItem] {
+        Array(repeating: GridItem(.flexible(), spacing: 12), count: viewModel.currentTheme.gridColumns)
     }
-}
-
-#Preview {
-    CardsGridView()
-}
+    
+    var body: some View {
+            LazyVGrid(columns: columns, spacing: 12) {
+                ForEach(viewModel.cards) { card in
+                    CardView(card: card, theme: viewModel.currentTheme)
+                        .aspectRatio(2/3, contentMode: .fit)
+                        .onTapGesture {
+                            withAnimation(.spring(response: 0.4)) {
+                                viewModel.choose(card)
+                            }
+                        }
+                }
+            }
+            .padding()
+        }
+    }

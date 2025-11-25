@@ -9,9 +9,12 @@ import SwiftUI
 
 @main
 struct ThinkFastApp: App {
+    @State private var viewModel = ThinkFastViewModel()
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ThinkFastGameView()
+                .environment(viewModel)
         }
     }
 }
